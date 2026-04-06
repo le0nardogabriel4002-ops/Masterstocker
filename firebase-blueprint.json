@@ -1,0 +1,82 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Producto",
+      "description": "Un artículo en el inventario",
+      "type": "object",
+      "properties": {
+        "companyId": { "type": "string", "description": "ID de la empresa" },
+        "name": { "type": "string", "description": "Nombre del producto" },
+        "sku": { "type": "string", "description": "Código de barras o SKU" },
+        "category": { "type": "string", "description": "Categoría del producto" },
+        "price": { "type": "number", "description": "Precio unitario" },
+        "stockQuantity": { "type": "number", "description": "Cantidad actual en stock" },
+        "minStockLevel": { "type": "number", "description": "Nivel mínimo para alerta" },
+        "description": { "type": "string", "description": "Descripción detallada" },
+        "imageUrl": { "type": "string", "description": "URL de la imagen del producto" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["companyId", "name", "sku", "price", "stockQuantity"]
+    },
+    "Transaction": {
+      "title": "Transacción de Stock",
+      "description": "Registro de entrada o salida de stock",
+      "type": "object",
+      "properties": {
+        "companyId": { "type": "string", "description": "ID de la empresa" },
+        "productId": { "type": "string", "description": "ID del producto relacionado" },
+        "type": { "type": "string", "enum": ["IN", "OUT"], "description": "Entrada o Salida" },
+        "quantity": { "type": "number", "description": "Cantidad movida" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "userId": { "type": "string", "description": "ID del usuario que realizó la acción" },
+        "notes": { "type": "string", "description": "Notas adicionales" }
+      },
+      "required": ["companyId", "productId", "type", "quantity", "timestamp", "userId"]
+    },
+    "User": {
+      "title": "Usuario",
+      "description": "Perfil de usuario del sistema",
+      "type": "object",
+      "properties": {
+        "companyId": { "type": "string", "description": "ID de la empresa" },
+        "companyName": { "type": "string", "description": "Nombre de la empresa" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "staff"] },
+        "isOnline": { "type": "boolean", "description": "Si el usuario está conectado actualmente" },
+        "lastSeen": { "type": "string", "format": "date-time", "description": "Última vez que el usuario estuvo activo" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "role"]
+    },
+    "Company": {
+      "title": "Empresa",
+      "description": "Una organización en el sistema",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Nombre de la empresa" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Colección de productos"
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Historial de movimientos de stock"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Perfiles de usuario"
+    },
+    "/companies/{companyId}": {
+      "schema": "Company",
+      "description": "Lista de empresas registradas"
+    }
+  }
+}
